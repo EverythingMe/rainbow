@@ -31,7 +31,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='Rainbow',
-    version='0.1',
+    version='0.2',
     description='Rainbow is Amazon Cloudformation on steroids',
     author='Omri Bahumi',
     author_email='omrib@everything.me',
