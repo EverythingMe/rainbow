@@ -30,11 +30,12 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='Rainbow',
+    name='rainbow-cfn',
     version='0.2',
     description='Rainbow is Amazon Cloudformation on steroids',
-    author='Omri Bahumi',
+    author='EverythingMe',
     author_email='omrib@everything.me',
+    url='http://github.com/EverythingMe/rainbow',
     packages=find_packages(),
     test_suite='nose.collector',
     tests_require=['nose', 'coverage', 'mock'],

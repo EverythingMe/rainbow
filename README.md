@@ -10,6 +10,14 @@ Working with Cloudformation inhouse, we discovered the following needs:
 * Compose a stack from reusable 'building blocks'
 * Improve readability by coding templates and parameters in YAML
 
+Installation
+============
+Just run `pip install rainbow-cfn`
+
+Usage
+=====
+* [Configure boto](http://boto.readthedocs.org/en/latest/boto_config_tut.html)
+* Run `rainbow`
 
 Datasources
 ===========
