@@ -1,0 +1,6 @@
+Resources:
+  MyLovelyResources:
+    Properties:
+      MyProperty: value
+      AnotherProperty: value2
+    Type: AWS::Dummy::DummyResource

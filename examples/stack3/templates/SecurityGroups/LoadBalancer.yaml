@@ -1,0 +1,22 @@
+Resources:
+  LoadBalancerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: LoadBalancer security group
+  LoadBalancerHttpIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupName: {Ref: LoadBalancerSecurityGroup}
+      IpProtocol: tcp
+      CidrIp: 0.0.0.0/0
+      FromPort: 80
+      ToPort: 80
+  LoadBalancerHttpsIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupName: {Ref: LoadBalancerSecurityGroup}
+      IpProtocol: tcp
+      CidrIp: 0.0.0.0/0
+      FromPort: 443
+      ToPort: 443
+

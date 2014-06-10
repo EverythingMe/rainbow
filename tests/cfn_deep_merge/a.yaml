@@ -1,0 +1,47 @@
+Resources:
+  AutoScalingGroup:
+    Properties:
+      AvailabilityZones: [{Ref: AvailabilityZone}]
+      Cooldown: 1200
+      DesiredCapacity: 0
+      HealthCheckGracePeriod: 1200
+      HealthCheckType: EC2
+      LaunchConfigurationName: {Ref: LaunchConfig}
+      MaxSize: 0
+      MinSize: 0
+      NotificationConfiguration:
+        NotificationTypes:
+          - autoscaling:EC2_INSTANCE_LAUNCH
+          - autoscaling:EC2_INSTANCE_LAUNCH_ERROR
+          - autoscaling:EC2_INSTANCE_TERMINATE
+          - autoscaling:EC2_INSTANCE_TERMINATE_ERROR
+        TopicARN: {Ref: AutoscalingNotificationsTopic}
+      Tags:
+      - Key: chef:environment
+        PropagateAtLaunch: 'true'
+        Value: {Ref: ChefEnvironment}
+      - Key: chef:role
+        PropagateAtLaunch: 'true'
+        Value: {Ref: ChefRole}
+      - Key: Name
+        PropagateAtLaunch: 'true'
+        Value: {'Fn::Join': ['-', [{Ref: ChefEnvironment}, {Ref: ChefRole}]]}
+    Type: AWS::AutoScaling::AutoScalingGroup
+  LaunchConfig:
+    Properties:
+      ImageId: {'Fn::FindInMap': [Images, {Ref: 'AWS::Region'}, {Ref: 'AmiType'}]}
+      InstanceType: {Ref: InstanceType}
+      KeyName: {Ref: BootstrapKeyName}
+      SecurityGroups: {Ref: SecurityGroups}
+      UserData: {'Fn::Base64': {'Fn::Join': ['', [
+        {'Fn::FindInMap': [UserData, CloudInit, Head]}, "\n",
+        '    CFN_STACK_ID=', {Ref: 'AWS::StackId'}, "\n",
+        "    CFN_RESOURCE=AutoScalingGroup\n",
+        '    ENVIRONMENT=', {Ref: ChefEnvironment}, "\n",
+        '    ROLE=', {Ref: ChefRole}, "\n",
+        '    DOMAIN=', {Ref: DomainSuffix}, "\n",
+        '    CHEF_SERVER_URL=', {Ref: ChefServerUrl}, "\n",
+        '    CHEF_SERVER_VALIDATION_PEM=', {'Fn::Base64': {Ref: ChefValidationPem}}, "\n",
+        {'Fn::FindInMap': [UserData, CloudInit, Body]}, "\n"]]}}
+    Type: AWS::AutoScaling::LaunchConfiguration
+

@@ -1,0 +1,3 @@
+a: !yaml datasources/a.yaml
+b: !yaml datasources/b.yaml
+c: !yaml datasources/c.yaml

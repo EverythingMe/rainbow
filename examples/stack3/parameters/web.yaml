@@ -1,0 +1,5 @@
+AutoScalingGroupMaxSize: 9
+AutoScalingGroupMinSize: 0
+InstanceType: m1.small
+SecurityGroup: $WebSecurityGroup # a pointer to a logical resource name on cfn_resources:rainbow-stack3-sgs
+

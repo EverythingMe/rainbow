@@ -1,0 +1,4 @@
+b_ptr: $a_list
+b_str: a B string
+b_list: [1,2,3]
+shared: from b

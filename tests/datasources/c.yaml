@@ -1,0 +1,2 @@
+c_ptr: $b_ptr
+shared: from c

@@ -1,0 +1,14 @@
+Resources:
+  WebSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Web security group
+  WebLoadBalancerIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupName: {Ref: WebSecurityGroup}
+      IpProtocol: tcp
+      SourceSecurityGroupName: {Ref: LoadBalancerSecurityGroup}
+      FromPort: 80
+      ToPort: 80
+

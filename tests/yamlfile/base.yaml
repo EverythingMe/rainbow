@@ -1,0 +1,3 @@
+included_file: !file yamlfile/includeme.file
+included_file64: !file64 yamlfile/includeme.file64
+included_yaml: !yaml yamlfile/includeme.yaml

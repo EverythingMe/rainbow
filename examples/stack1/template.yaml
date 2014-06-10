@@ -1,0 +1,46 @@
+Mappings:
+  Images: !yaml files/images.json # because JSON is a valid YAML, we can include it with the !yaml directive
+                                  # this file contains the mapping from region and image name to AMI id
+Parameters: # all the parameters will be loaded from the parameters.yaml data source
+  AvailabilityZones: {Type: CommaDelimitedList}
+  KeyName: {Type: String}
+  AutoScalingGroupMinSize: {Type: String}
+  AutoScalingGroupMaxSize: {Type: String}
+  Image: {Type: String}
+  InstanceType: {Type: String}
+Resources:
+  AutoScalingGroup:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      AvailabilityZones: {Ref: AvailabilityZones}
+      Cooldown: 1200
+      HealthCheckGracePeriod: 1200
+      HealthCheckType: EC2
+      LaunchConfigurationName: {Ref: LaunchConfig}
+      MinSize: {Ref: AutoScalingGroupMinSize}
+      MaxSize: {Ref: AutoScalingGroupMaxSize}
+  LaunchConfig:
+    Type: AWS::AutoScaling::LaunchConfiguration
+    Properties:
+      ImageId: {'Fn::FindInMap': [Images, {Ref: 'AWS::Region'}, {Ref: Image}]}
+      InstanceType: {Ref: InstanceType}
+      KeyName: {Ref: KeyName}
+      SecurityGroups: [{Ref: SecurityGroup}]
+      UserData: !file64 files/userdata.txt # the file/userdata.txt content will be base64 encoded
+  SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Awesome security group
+      SecurityGroupIngress:
+        # Allow SSH from everywhere
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+
+        # Allow ICMP destination unreachable for TCP PMTU discovery to work properly
+        - IpProtocol: icmp
+          FromPort: 3
+          ToPort: 4
+          CidrIp: 0.0.0.0/0
+

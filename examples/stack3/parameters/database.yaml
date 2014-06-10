@@ -1,0 +1,6 @@
+AutoScalingGroupMaxSize: 1
+AutoScalingGroupMinSize: 0
+InstanceType: c3.xlarge
+SecurityGroup: $DatabaseSecurityGroup # a pointer to a logical resource name on cfn_resources:rainbow-stack3-sgs
+Image: PreciseAmd64HvmInstanceStore   # HVM instance. use HVM AMI
+

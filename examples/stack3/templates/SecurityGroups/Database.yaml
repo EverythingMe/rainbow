@@ -1,0 +1,14 @@
+Resources:
+  DatabaseSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Database security group
+  DatabaseWebIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupName: {Ref: DatabaseSecurityGroup}
+      IpProtocol: tcp
+      SourceSecurityGroupName: {Ref: WebSecurityGroup}
+      FromPort: 3306
+      ToPort: 3306
+

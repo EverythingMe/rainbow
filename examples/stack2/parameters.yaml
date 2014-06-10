@@ -1,0 +1,8 @@
+AutoScalingGroupMaxSize: 1
+AutoScalingGroupMinSize: 0
+AvailabilityZones:
+  - us-east-1a
+Image: PreciseAmd64PvInstanceStore
+InstanceType: m1.small
+KeyName: omrib-laptop
+

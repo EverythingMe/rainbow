@@ -1,0 +1,30 @@
+Resources:
+  AllSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: All security group
+  AllIcmpEchoIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupName: {Ref: AllSecurityGroup}
+      IpProtocol: icmp
+      CidrIp: 0.0.0.0/0
+      FromPort: 8
+      ToPort: 0
+  AllIcmpDestinationUnreachableFragmentationNeededIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupName: {Ref: AllSecurityGroup}
+      IpProtocol: icmp
+      CidrIp: 0.0.0.0/0
+      FromPort: 3
+      ToPort: 4
+  AllSshIngress:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupName: {Ref: AllSecurityGroup}
+      IpProtocol: tcp
+      CidrIp: 0.0.0.0/0
+      FromPort: 22
+      ToPort: 22
+

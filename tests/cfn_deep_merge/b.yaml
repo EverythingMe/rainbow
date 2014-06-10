@@ -1,0 +1,37 @@
+Resources:
+  AutoScalingGroup:
+    Properties:
+      NewPropertyScalar: 100
+      NewPropertyList: [1,2,3]
+      NewPropertyDict:
+        a: b
+        c: d
+        e: f
+      AvailabilityZones: [{Ref: NewAvailabilityZone}]
+      Cooldown: 300
+      DesiredCapacity: 10
+      HealthCheckGracePeriod: 300
+      HealthCheckType: DifferentHealthCheck
+      LaunchConfigurationName: {Ref: LaunchConfigush}
+      NotificationConfiguration:
+        NotificationTypes:
+          - autoscaling:EC2_INSTANCE_LAUNCH
+          - autoscaling:EC2_INSTANCE_TERMINATE
+      Tags:
+      - Key: chef:role
+        PropagateAtLaunch: 'true'
+        Value: {Ref: ChefRole}
+      - Key: Name
+        PropagateAtLaunch: 'true'
+        Value: {'Fn::Join': ['-', [{Ref: ChefEnvironment}, {Ref: ChefRole}]]}
+  LaunchConfig:
+    Properties:
+      UserData: {'Fn::Base64': {'Fn::Join': ['', [
+        {'Fn::FindInMap': [UserData, CloudInit, Head]}, "\n",
+        '    ENVIRONMENT=', {Ref: ChefEnvironment}, "\n",
+        '    ROLE=', {Ref: ChefRole}, "\n",
+        '    DOMAIN=', {Ref: DomainSuffix}, "\n",
+        '    CHEF_SERVER_URL=', {Ref: ChefServerUrl}, "\n",
+        '    CHEF_SERVER_VALIDATION_PEM=', {'Fn::Base64': {Ref: ChefValidationPem}}, "\n",
+        {'Fn::FindInMap': [UserData, CloudInit, Body]}, "\n"]]}}
+

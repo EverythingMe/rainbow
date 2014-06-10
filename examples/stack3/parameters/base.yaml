@@ -1,0 +1,10 @@
+AvailabilityZones:
+  - us-east-1a
+Image: PreciseAmd64PvInstanceStore # the web and database roles are using c3 instances, which support HVM
+                                   # they also override this parameter
+KeyName: omrib-laptop
+SecurityGroups:
+  - $AllSecurityGroup              # pointer to another key
+                                   # AllSecurityGroup is a logical resource created on our security groups stack
+  - $SecurityGroup                 # pointer to another key. this one is overriden by the per-role YAML file
+

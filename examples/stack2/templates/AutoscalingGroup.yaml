@@ -1,0 +1,31 @@
+Mappings:
+  Images: !yaml files/images.json
+Parameters:
+  AvailabilityZones: {Type: CommaDelimitedList}
+  KeyName: {Type: String}
+  AutoScalingGroupMinSize: {Type: String}
+  AutoScalingGroupMaxSize: {Type: String}
+  Image: {Type: String}
+  InstanceType: {Type: String}
+  SecurityGroup: {Type: String} # this parameter comes from the cfn_resources datasource.
+                                # that's the logical name of the SecurityGroup resource.
+Resources:
+  AutoScalingGroup:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    Properties:
+      AvailabilityZones: {Ref: AvailabilityZones}
+      Cooldown: 1200
+      HealthCheckGracePeriod: 1200
+      HealthCheckType: EC2
+      LaunchConfigurationName: {Ref: LaunchConfig}
+      MinSize: {Ref: AutoScalingGroupMinSize}
+      MaxSize: {Ref: AutoScalingGroupMaxSize}
+  LaunchConfig:
+    Type: AWS::AutoScaling::LaunchConfiguration
+    Properties:
+      ImageId: {'Fn::FindInMap': [Images, {Ref: 'AWS::Region'}, {Ref: Image}]}
+      InstanceType: {Ref: InstanceType}
+      KeyName: {Ref: KeyName}
+      SecurityGroups: [{Ref: SecurityGroup}]
+      UserData: !file64 files/userdata.txt
+
