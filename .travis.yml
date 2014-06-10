@@ -4,6 +4,7 @@ python:
 
 install:
   - "python setup.py install"
+  - "pip install coverage mock" # install requirements for testing in virtualenv
 
 script: "cd tests; nosetests --with-coverage --cover-package=rainbow"
 
