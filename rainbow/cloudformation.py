@@ -92,7 +92,12 @@ class Cloudformation(object):
 
         parameters = {}
         for parameter in template.get('Parameters', []):
-            parameters[parameter] = datasource_collection.get_parameter_recursive(parameter)
+            parameter_value = datasource_collection.get_parameter_recursive(parameter)
+
+            if hasattr(parameter_value, '__iter__'):
+                parameter_value = ', '.join(map(str, parameter_value))
+
+            parameters[parameter] = parameter_value
 
         return parameters
 

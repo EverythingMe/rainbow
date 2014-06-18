@@ -1,0 +1,9 @@
+Parameters:
+  a_list: {Type: CommaDelimitedList}
+  b_list: {Type: CommaDelimitedList}
+Resources:
+  MyLovelyResource:
+    Properties:
+      MyProperty: {'Ref': 'a_list'}
+      AnotherProperty: value2
+    Type: AWS::Dummy::DummyResource

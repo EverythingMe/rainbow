@@ -1,4 +1,4 @@
 Resources:
   Type: AWS::EC2::Instance
   Properties:
-    InstanceType: {'Rb::InstanceChooser': 'c3.large'}
+    InstanceType: {'Rb::InstanceChooser': ['c3.large']}

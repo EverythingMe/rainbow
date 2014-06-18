@@ -59,14 +59,14 @@ class TestDataSources(TestCase):
             )
 
     def test_list(self):
-        self.assertEqual(
+        self.assertListEqual(
             self.datasource_collection.get_parameter_recursive('a_list'),
-            'item1, item2, item3, item4'
+            ['item1', 'item2', 'item3', 'item4']
         )
 
-        self.assertEqual(
+        self.assertListEqual(
             self.datasource_collection.get_parameter_recursive('b_list'),
-            '1, 2, 3'
+            [1, 2, 3]
         )
 
     def test_override(self):

@@ -107,13 +107,9 @@ class DataSourceCollection(list):
 
             return self.get_parameter_recursive(parameter)
         elif hasattr(parameter, '__iter__'):
-            # iterable, return a comma separated list
+            # resolve iterables and convert to a list
 
-            # if the iterable contains more pointers, resolve them and convert to a list
-            parameter = [self.get_parameter_recursive(i) if isinstance(i, DataCollectionPointer) else i
-                         for i in parameter]
-
-            return ", ".join([str(i) for i in parameter])
+            return [self.get_parameter_recursive(i) if isinstance(i, DataCollectionPointer) else i for i in parameter]
         else:
             # regular parameter, return as is.
 
