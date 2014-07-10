@@ -83,7 +83,7 @@ Pointers can be used to reference a key from a different type of datasource.
 
 Available datasources
 ---------------------
-* YAML - `yaml:path/to/file[:rootkey]` - stores all keys (starting from rootkey, if given) with their values
+* YAML - `yaml[:rootkey]:path/to/file` - stores all keys (starting from rootkey, if given) with their values
 * cfn_resources - `cfn_resources[:region]:stackname` - stores a logical resource to physical resource mapping. [Read more about Cloudformation resources](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/concept-resources.html)
 * cfn_outputs - `cfn_outputs[:region]:stackname` - stores a output to value mapping. [Read more about Cloudformation outputs](http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/concept-outputs.html)
 * file - `file:name:path/to/file` - stores a single key `name` with the value of the file content
