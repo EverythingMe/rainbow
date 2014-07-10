@@ -89,9 +89,21 @@ class RainbowYamlLoader(yaml.Loader):
         :param node: loader.add_constructor parameter
         :return: File content as base64 encoded string
         """
+        template_path = loader.construct_scalar(node)
 
-        with open(loader.construct_scalar(node)) as f:
-            return RainbowYamlLoader(f).get_data()
+        if ':' in template_path:
+            key, yaml_file = template_path.split(':', 1)
+        else:
+            yaml_file = template_path
+            key = None
+
+        with open(yaml_file) as f:
+            template = RainbowYamlLoader(f).get_data()
+            
+        if key:
+            template = template[key]
+        return template
+
 
     def __init__(self, *args, **kwargs):
         self.add_constructor('!file', self.__class__.yaml_file)
