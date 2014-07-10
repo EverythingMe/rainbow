@@ -21,10 +21,12 @@ class TestPreprocessor(TestCase):
     def test_instance_chooser(self):
         with open('preprocessor/instance_chooser1.yaml') as instance_chooser1, \
                 open('preprocessor/instance_chooser2.yaml') as instance_chooser2, \
-                open('preprocessor/instance_chooser3.yaml') as instance_chooser3:
+                open('preprocessor/instance_chooser3.yaml') as instance_chooser3, \
+                open('preprocessor/instance_chooser4.yaml') as instance_chooser4:
             template = RainbowYamlLoader(instance_chooser1).get_data()
             template2 = RainbowYamlLoader(instance_chooser2).get_data()
             template3 = RainbowYamlLoader(instance_chooser3).get_data()
+            template4 = RainbowYamlLoader(instance_chooser4).get_data()
 
         processed = self.preprocessor.process(template)
         self.assertEqual(processed['Resources']['Properties']['InstanceType'], 'c1.xlarge')
@@ -33,6 +35,9 @@ class TestPreprocessor(TestCase):
         self.assertEqual(processed2['Resources']['Properties']['InstanceType'], 'c3.large')
 
         self.assertRaises(InvalidInstanceException, self.preprocessor.process, template3)
+
+        processed4 = self.preprocessor.process(template4)
+        self.assertEqual(processed4['Resources']['Properties']['InstanceType'], 'c3.large')
 
     def test_invalid_function(self):
         self.assertRaises(InvalidPreprocessorFunctionException, self.preprocessor.process, {'Rb::NoSuchFunction': ''})

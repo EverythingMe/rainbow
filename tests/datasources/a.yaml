@@ -11,3 +11,6 @@ item7: item4
 a_str: foobar
 shared: from a
 c1large: c1.large
+PossibleInstances:
+    - c3.large
+    - c1.medium

@@ -90,8 +90,11 @@ def instance_chooser(preprocessor, instance_types):
     :rtype: str
     """
 
+    if isinstance(instance_types, DataCollectionPointer):
+        instance_types = preprocessor.datasource_collection.get_parameter_recursive(instance_types)
+
     if not hasattr(instance_types, '__iter__'):
-        instance_types = [instance_types]
+        raise InvalidInstanceException('Instance types should be an iterable (a list)')
 
     # resolve pointers if relevant
     for i, v in enumerate(instance_types):

@@ -1,0 +1,4 @@
+Resources:
+  Type: AWS::EC2::Instance
+  Properties:
+    InstanceType: {'Rb::InstanceChooser': $PossibleInstances}
