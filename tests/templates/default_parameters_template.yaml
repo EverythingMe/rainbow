@@ -1,0 +1,3 @@
+Parameters:
+  DefaultString: {Type: String, Default: "default string value"}
+  DefaultCommaDelimitedList: {Type: CommaDelimitedList, Default: "default, comma, delimited, list"}

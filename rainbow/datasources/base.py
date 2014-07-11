@@ -131,3 +131,10 @@ class DataSourceCollection(list):
         else:
             raise InvalidParameterException(
                 "Unable to find parameter %s in any of the data sources %r" % (parameter, self))
+
+    def __contains__(self, item):
+        try:
+            self.get_parameter_recursive(item)
+            return True
+        except InvalidParameterException:
+            return False
