@@ -28,3 +28,10 @@ class TestCloudformation(TestCase):
 
     def test_invalid_function(self):
         self.assertRaises(InvalidPreprocessorFunctionException, self.preprocessor.process, {'Rb::NoSuchFunction': ''})
+
+    def test_resolve_template_default_parameter(self):
+        template = TemplateLoader.load_templates(['templates/default_parameters_template.yaml'])
+        parameters = Cloudformation.resolve_template_parameters(template, self.datasource_collection)
+
+        self.assertEqual(parameters['DefaultString'], 'default string value')
+        self.assertEqual(parameters['DefaultCommaDelimitedList'], 'default, comma, delimited, list')
