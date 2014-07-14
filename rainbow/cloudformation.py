@@ -210,7 +210,8 @@ class Cloudformation(object):
                            'logical_resource_id': event.logical_resource_id,
                            'physical_resource_id': event.physical_resource_id,
                            'resource_status': event.resource_status,
-                           'resource_status_reason': event.resource_status_reason}
+                           'resource_status_reason': event.resource_status_reason,
+                           'timestamp': event.timestamp}
 
                 previous_stack_events = len(stack_events)
 
