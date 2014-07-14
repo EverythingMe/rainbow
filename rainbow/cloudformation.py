@@ -189,6 +189,8 @@ class Cloudformation(object):
 
         if initial_entry is None:
             return self._tail_stack_events(name, len(self.describe_stack_events(name)))
+        elif initial_entry < 0:
+            return self._tail_stack_events(name, len(self.describe_stack_events(name)) + initial_entry)
         else:
             return self._tail_stack_events(name, initial_entry)
 
