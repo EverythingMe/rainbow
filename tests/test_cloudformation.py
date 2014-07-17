@@ -23,8 +23,8 @@ class TestCloudformation(TestCase):
         template = TemplateLoader.load_templates(['templates/simpletemplate.yaml'])
         parameters = Cloudformation.resolve_template_parameters(template, self.datasource_collection)
 
-        self.assertEqual(parameters['a_list'], 'item1, item2, item3, item4')
-        self.assertEqual(parameters['b_list'], '1, 2, 3')
+        self.assertEqual(parameters['a_list'], 'item1,item2,item3,item4')
+        self.assertEqual(parameters['b_list'], '1,2,3')
 
     def test_invalid_function(self):
         self.assertRaises(InvalidPreprocessorFunctionException, self.preprocessor.process, {'Rb::NoSuchFunction': ''})

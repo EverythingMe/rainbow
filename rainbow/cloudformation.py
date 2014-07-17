@@ -98,7 +98,7 @@ class Cloudformation(object):
                 parameter_value = datasource_collection.get_parameter_recursive(parameter)
 
                 if hasattr(parameter_value, '__iter__'):
-                    parameter_value = ', '.join(map(str, parameter_value))
+                    parameter_value = ','.join(map(str, parameter_value))
 
             parameters[parameter] = parameter_value
 
