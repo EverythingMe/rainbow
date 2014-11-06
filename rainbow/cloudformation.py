@@ -114,13 +114,21 @@ class Cloudformation(object):
         :type template: str
         :param parameters: dictionary containing key value pairs as CFN parameters
         :type parameters: dict
+        :rtype: bool
+        :return: False if there aren't any updates to be performed, True if no exception has been thrown.
         """
 
         try:
             self.connection.update_stack(name, json.dumps(template), disable_rollback=True,
                                          parameters=parameters.items(), capabilities=['CAPABILITY_IAM'])
         except boto.exception.BotoServerError, ex:
-            raise CloudformationException('error occured while updating stack %s: %s' % (name, ex.message))
+            if ex.message == 'No updates are to be performed.':
+                # this is not really an error, but there aren't any updates.
+                return False
+            else:
+                raise CloudformationException('error occured while updating stack %s: %s' % (name, ex.message))
+        else:
+            return True
 
     def create_stack(self, name, template, parameters):
         """
