@@ -40,6 +40,11 @@ from rainbow.cloudformation import Cloudformation, StackFailStatus, StackSuccess
 
 def main():  # pragma: no cover
     logging.basicConfig(level=logging.INFO)
+
+    # boto logs errors in addition to throwing exceptions. on rainbow.cloudformation.Cloudformation.update_stack()
+    # I'm ignoring the 'No updates are to be performed.' exception, so I don't want it to be logged.
+    logging.getLogger('boto').setLevel(logging.CRITICAL)
+
     logger = logging.getLogger('rainbow')
 
     parser = argparse.ArgumentParser(description='Load cloudformation templates with cool data sources as arguments')
@@ -104,11 +109,14 @@ def main():  # pragma: no cover
         stack_events_iterator = cloudformation.tail_stack_events(args.stack_name, None if args.update_stack else 0)
 
     if args.update_stack:
-        cloudformation.update_stack(args.stack_name, template, parameters)
+        stack_modified = cloudformation.update_stack(args.stack_name, template, parameters)
+        if not stack_modified:
+            logger.info('No updates to be performed')
     else:
         cloudformation.create_stack(args.stack_name, template, parameters)
+        stack_modified = True
 
-    if args.block:
+    if args.block and stack_modified:
         for event in stack_events_iterator:
             if isinstance(event, StackFailStatus):
                 logger.warn('Stack creation failed: %s', event)
