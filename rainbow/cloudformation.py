@@ -65,6 +65,14 @@ class CloudformationException(Exception):
 
 
 class Cloudformation(object):
+    # this is from http://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_Stack.html
+    # boto.cloudformation.stack.StackEvent.valid_states doesn't have the full list.
+    VALID_STACK_STATUSES = ['CREATE_IN_PROGRESS', 'CREATE_FAILED', 'CREATE_COMPLETE', 'ROLLBACK_IN_PROGRESS',
+                            'ROLLBACK_FAILED', 'ROLLBACK_COMPLETE', 'DELETE_IN_PROGRESS', 'DELETE_FAILED',
+                            'DELETE_COMPLETE', 'UPDATE_IN_PROGRESS', 'UPDATE_COMPLETE_CLEANUP_IN_PROGRESS',
+                            'UPDATE_COMPLETE', 'UPDATE_ROLLBACK_IN_PROGRESS', 'UPDATE_ROLLBACK_FAILED',
+                            'UPDATE_ROLLBACK_COMPLETE_CLEANUP_IN_PROGRESS', 'UPDATE_ROLLBACK_COMPLETE']
+
     default_region = 'us-east-1'
 
     def __init__(self, region=None):
@@ -103,6 +111,20 @@ class Cloudformation(object):
             parameters[parameter] = parameter_value
 
         return parameters
+
+    def stack_exists(self, name):
+        """
+        Check if a CFN stack exists
+
+        :param name: stack name
+        :return: True/False
+        :rtype: bool
+        """
+
+        # conserve bandwidth (and API calls) by not listing any stacks in DELETE_COMPLETE state
+        active_stacks = boto_all(self.connection.list_stacks, [state for state in Cloudformation.VALID_STACK_STATUSES
+                                                               if state != 'DELETE_COMPLETE'])
+        return name in [stack.stack_name for stack in active_stacks if stack.stack_status]
 
     def update_stack(self, name, template, parameters):
         """

@@ -55,6 +55,8 @@ def main():  # pragma: no cover
                         help='Simply output all datasources and their values')
     parser.add_argument('--update-stack', action='store_true',
                         help='Update a pre-existing stack rather than create a new one')
+    parser.add_argument('--update-stack-if-exists', action='store_true',
+                        help='Create a new stack if it doesn\'t exist, update if it does')
     parser.add_argument('--block', action='store_true',
                         help='Track stack creation, if the stack creation failed, exits with a non-zero exit code')
 
@@ -90,6 +92,12 @@ def main():  # pragma: no cover
         return
 
     cloudformation = Cloudformation(args.region)
+
+    if args.update_stack_if_exists:
+        if cloudformation.stack_exists(args.stack_name):
+            args.update_stack = True
+        else:
+            args.update_stack = False
 
     if args.block:
         # set the iterator prior to updating the stack, so it'll begin from the current bottom
