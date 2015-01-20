@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/EverythingMe/rainbow.svg?branch=master)](https://travis-ci.org/EverythingMe/rainbow)
 
-# Rainbow - Cloudformation on steroids
+# Rainbow - AWS Cloudformation on steroids
 
 Working with Cloudformation inhouse, we discovered the following needs:
 * Break a big stack into several smaller ones
