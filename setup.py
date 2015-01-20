@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='rainbow-cfn',
-    version='0.4',
+    version='0.5',
     description='Rainbow is AWS Cloudformation on steroids',
     author='EverythingMe',
     author_email='omrib@everything.me',
