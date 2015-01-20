@@ -29,7 +29,7 @@
 from rainbow.cloudformation import Cloudformation
 from base import DataSourceBase
 
-__all__ = ['CfnOutputsDataSource', 'CfnResourcesDataSource']
+__all__ = ['CfnOutputsDataSource', 'CfnResourcesDataSource', 'CfnParametersDataSource']
 
 
 class CfnDataSourceBase(DataSourceBase):
@@ -65,3 +65,13 @@ class CfnResourcesDataSource(CfnDataSourceBase):
         super(CfnResourcesDataSource, self).__init__(data_source)
 
         self.data = {r.logical_resource_id: r.physical_resource_id for r in self.stack.describe_resources()}
+
+
+class CfnParametersDataSource(CfnDataSourceBase):
+    datasource_name = 'cfn_parameters'
+
+    def __init__(self, data_source):
+        super(CfnParametersDataSource, self).__init__(data_source)
+        
+        self.data = {p.key: p.value for p in self.stack.parameters}
+        
