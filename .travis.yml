@@ -2,9 +2,6 @@ language: python
 python:
   - "2.7"
 
-install:
-  - "python setup.py install"
-  - "pip install coverage mock" # install requirements for testing in virtualenv
-
-script: "cd tests; nosetests --with-coverage --cover-package=rainbow"
+install: pip install -e .[test]
+script: cd tests; nosetests --with-coverage --cover-package=rainbow
 
