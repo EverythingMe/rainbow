@@ -82,7 +82,36 @@ class Cloudformation(object):
 
             parameters[parameter] = parameter_value
 
-        return parameters
+        # All template parameters are converted to strings and stripped
+        # I couldn't find any documentation for this, but I have tested it myself:
+        # template.yaml:
+        #     Parameters:
+        #       StringParameter:
+        #         Type: String
+        #       NumberParameter:
+        #         Type: Number
+        #       CommaDelimitedParameter:
+        #         Type: CommaDelimitedList
+        #     Resources:
+        #       Eip:
+        #         Type: AWS::EC2::EIP
+        #
+        # parameters.yaml:
+        #     CommaDelimitedParameter: ["a", " b", "c ", " d "]
+        #     StringParameter: "       \n     string that starts and ends with a new line       \n          "
+        #     NumberParameter: 10
+        #
+        # creation:
+        #     rainbow -d yaml:parameters.yaml test template.yaml
+        #
+        # test:
+        #     >>> import boto.cloudformation
+        #     >>> cfn = boto.cloudformation.connect_to_region('us-east-1')
+        #     >>> stack = cfn.describe_stacks('test')[0]
+        #     >>> stack.parameters
+        #     [Parameter:"StringParameter"="string that starts and ends with a new line",
+        #      Parameter:"CommaDelimitedParameter"="a,b,c,d", Parameter:"NumberParameter"="10"]
+        return {k: str(v).strip() for k, v in parameters.iteritems()}
 
     def stack_exists(self, name):
         """

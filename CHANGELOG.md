@@ -1,3 +1,13 @@
+# v1.0 - ????
+* Backward-incompatible change: removed --noop
+* New parameters:
+    --dump-stack-template-json
+    --dump-stack-parameters-json
+    --dump-template-json
+    --dump-parameters-json
+    --compare-template
+    --compare-parameters
+
 # v0.4 - 20150120
 * Fixed a bug in handling of comma separated parameters
 * Added --update-stack-if-exists command line option
